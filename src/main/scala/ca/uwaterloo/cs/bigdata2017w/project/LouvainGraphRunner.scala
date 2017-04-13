@@ -1,19 +1,12 @@
 package ca.uwaterloo.cs.bigdata2017w.project
 
+
+import org.apache.spark.SparkContext
+import scala.Array.canBuildFrom
 import org.apache.spark._
 import org.apache.spark.graphx._
 import org.apache.spark.rdd.RDD
-import _root_.io.bespin.scala.util.Tokenizer
-import org.apache.log4j._
-import org.apache.hadoop.fs._
-import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
-import org.rogach.scallop._
-
-import org.apache.spark.SparkContext
-import org.apache.spark.graphx._
-import scala.Array.canBuildFrom
-import java.io._
 
 /**
   * @author Irene
@@ -41,7 +34,8 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
 
     //------------------ultimate communities+ initial vertex_id-------------------------
 
-    val VInfoRDD = sc.textFile(verticePath) //(5,{community:5,communitySigmaTot:6,internalWeight:0,nodeWeight:3})
+    val VInfoRDD = sc.textFile(verticePath)
+    //(5,{community:5,communitySigmaTot:6,internalWeight:0,nodeWeight:3})
 
     var pairRDD = VInfoRDD.map { line =>
       var effectline = line.split("\\(")(1)
@@ -57,11 +51,12 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
     }
     else {
       var FormerVerticePath = outputdir + "/level_" + (level - 1) + "_communitys"
+
       val FormerVInfoRDD = sc.textFile(FormerVerticePath)
-      //(5,{community:5,communitySigmaTot:6,internalWeight:0,nodeWeight:3})
+
       var FormerpairRDD = FormerVInfoRDD.map { line =>
         var effectline = line.split("\\(")(1)
-        //5,{community:5,communitySigmaTot:6,internalWeight:0,nodeWeight:3}
+
         var InfoList = effectline.split(",")
         var Vid = InfoList(0).trim()
         var communityList = InfoList(1).trim()
@@ -84,9 +79,6 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
         else
           cpair(pair._1) = cpair(pair._1) + FormerpairRDD.lookup(pair._1).mkString(" ") + " " + FormerpairRDD.lookup(pair._2).mkString(" ")
       }
-
-      //      println("cpair")
-      //      cpair.foreach(println)
 
       var pairList = cpair.toArray
 

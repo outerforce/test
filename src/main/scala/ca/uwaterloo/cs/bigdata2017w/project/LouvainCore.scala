@@ -1,13 +1,15 @@
 package ca.uwaterloo.cs.bigdata2017w.project
 
-import org.apache.spark.SparkConf
-import org.apache.spark.rdd.RDD
-import org.apache.spark._
 import org.apache.spark.SparkContext
 import org.apache.spark.graphx._
+import org.apache.spark.rdd.RDD
+import org.apache.spark._
 import scala.reflect.ClassTag
 import org.apache.spark.broadcast.Broadcast
 import scala.math.BigDecimal._
+/**
+  * @author Irene
+  */
 
 object LouvainCore {
 
@@ -64,7 +66,7 @@ object LouvainCore {
 
     println("\n\n\n\n\n\n-------------------totalEdgeWeight:" + totalGraphWeight.value + "\n\n\n\n\n\n")
 
-    // gather community information from each vertex's local neighborhood
+
 
     //    var msgRDD = louvainGraph.aggregateMessages[Map[(Long, Long), Long]](
     //      triplet => {
@@ -75,7 +77,8 @@ object LouvainCore {
     //        Iterator(m1, m2)
     //      }, mergeMsg)
 
-    // var msgRDD = louvainGraph.aggregateMessages(sendCommunityData,mergeMsg)
+    
+    // gather community information from each vertex's local neighborhood
     var communityRDD = louvainGraph.aggregateMessages(sendCommunityData, mergeCommunityMessages)
     var activeMessages = communityRDD.count() //materializes the msgRDD and caches it in memory
     print("\n\n\n\n\n" + activeMessages + "\n\n\n\n\n\n\n\n")
@@ -127,7 +130,6 @@ object LouvainCore {
       communityRDD = louvainGraph.aggregateMessages(sendCommunityData, mergeCommunityMessages).cache()
       var activeMessages = communityRDD.count()
 
-      //
       //      msgRDD = louvainGraph.aggregateMessages[Map[(Long, Long), Long]](
       //        triplet => {
       //          val m1 = (triplet.dstId, Map((triplet.srcAttr.community, triplet.srcAttr.communitySigmaTot) -> triplet.attr))
@@ -135,7 +137,8 @@ object LouvainCore {
       //          Iterator(m1, m2)
       //        }
       //        , mergeMsg).cache()
-      //      activeMessages = msgRDD.count() // materializes the graph by forcing computation
+      //      activeMessages = msgRDD.count()
+      // materializes the graph by forcing computation
       print("\n\n\n\n\n" + activeMessages + "\n\n\n\n\n\n\n\n")
 
       oldMsgs.unpersist(blocking = false)
@@ -178,8 +181,7 @@ object LouvainCore {
 
     val actualQ = newVertices.values.reduce(_ + _)
     //println("---------------------------------------------main--------------------------------------------")
-    // return the modularity value of the graph along with the
-    // graph. vertices are labeled with their community
+    // return the modularity value of the graph along with the graph. vertices are labeled with their community
     return (actualQ, louvainGraph, count / 2)
 
   }
@@ -260,7 +262,7 @@ object LouvainCore {
     newMap.toMap
   }
 
-  // Merge neighborhood community data into a single message for each vertex
+/*
   private def mergeMsg(m1: Map[(Long, Long), Long], m2: Map[(Long, Long), Long]) = {
     val newMap = scala.collection.mutable.HashMap[(Long, Long), Long]()
     m1.foreach({ case (k, v) =>
@@ -272,7 +274,7 @@ object LouvainCore {
       else newMap(k) = v
     })
     newMap.toMap
-  }
+  }*/
 
   /**
     * Merge neighborhood community data into a single message for each vertex
@@ -330,10 +332,9 @@ object LouvainCore {
   def compressGraph(graph: Graph[VertexState, Long], debug: Boolean = true): Graph[VertexState, Long] = {
 
     // aggregate the edge weights of self loops. edges with both src and dst in the same community.
-    // WARNING  can not use graph.mapReduceTriplets because we are mapping to new vertexIds
     val internalEdgeWeights = graph.triplets.flatMap(et => {
       if (et.srcAttr.community == et.dstAttr.community) {
-        Iterator((et.srcAttr.community, 2 * et.attr)) // count the weight from both nodes  // count the weight from both nodes
+        Iterator((et.srcAttr.community, 2 * et.attr)) // count the weight from both nodes
       }
       else Iterator.empty
     }).reduceByKey(_ + _)
@@ -364,8 +365,7 @@ object LouvainCore {
     }).cache()
 
 
-    // generate a new graph where each community of the previous
-    // graph is now represented as a single vertex
+    // generate a new graph where each community of the previous, graph is now represented as a single vertex
     val compressedGraph = Graph(newVerts, edges)
       .partitionBy(PartitionStrategy.EdgePartition2D).groupEdges(_ + _)
 
