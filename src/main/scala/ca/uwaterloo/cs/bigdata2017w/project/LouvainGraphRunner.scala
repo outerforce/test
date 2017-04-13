@@ -87,7 +87,7 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
       var result = sc.parallelize(pairArray)
 
       result.saveAsTextFile(outputdir + "/level_" + level + "_communitys")
-
+      sc.stop()
     }
 
   }

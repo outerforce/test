@@ -14,11 +14,11 @@ import scala.reflect.ClassTag
   */
 
 class MainConf(args: Seq[String]) extends ScallopConf(args){
-  mainOptions = Seq(input, output, parallelism)
+  mainOptions = Seq(input, output, parallelism,reducers)
   val input = opt[String](descr = "input path", required = true)
   val output = opt[String](descr = "output path", required = true)
   val parallelism = opt[Int](descr = "parallel", required = false, default = Some(-1))
-  //val reducers = opt[Int](descr = "parallel", required = false, default = Some(-1))
+  val reducers = opt[Int](descr = "number of reducers", required = false, default = Some(4))
   verify()
 }
 
@@ -33,6 +33,7 @@ object FUMain{
     log.info("Output: " + args.output())
 
     val parallelism = args.parallelism()
+    val reducers = args.reducers
     var minProgress = 2000
     var progressCounter = 4
 
@@ -77,7 +78,7 @@ object FUMain{
 
     val runner = new LouvainGraphRunner(minProgress, progressCounter, out)
     runner.run(sc, graph)
-
+    //sc.stop()
     val duration = (System.nanoTime - t1) / 1e9d
     println("\n\n\n\n\n\n----------Job finished in " + duration + "s---------------------------\n\n\n\n\n")
   }
