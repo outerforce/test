@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
-data/
 target/
 twitter1/
+data/twitter_large/
+data/small.txt
