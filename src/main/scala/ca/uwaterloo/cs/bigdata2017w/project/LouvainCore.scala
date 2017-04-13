@@ -391,18 +391,3 @@ object LouvainCore {
     edges.unpersist(blocking = false)
     return louvainGraph
   }
-
-
-  // debug printing
-  private def printlouvain(graph: Graph[VertexState, Long]) = {
-    print("\ncommunity label snapshot\n(vid,community,sigmaTot)\n")
-    graph.vertices.mapValues((vid, vdata) => (vdata.community, vdata.communitySigmaTot)).collect().foreach(f => println(" " + f))
-  }
-
-
-  // debug printing
-  private def printedgetriplets(graph: Graph[VertexState, Long]) = {
-    print("\ncommunity label snapshot FROM TRIPLETS\n(vid,community,sigmaTot)\n")
-    (graph.triplets.flatMap(e => Iterator((e.srcId, e.srcAttr.community, e.srcAttr.communitySigmaTot), (e.dstId, e.dstAttr.community, e.dstAttr.communitySigmaTot))).collect()).foreach(f => println(" " + f))
-  }
-}
