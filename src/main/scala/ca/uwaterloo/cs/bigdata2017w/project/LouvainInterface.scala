@@ -32,7 +32,7 @@ import scala.reflect.ClassTag
   *
   *
   */
-class  LouvainHarness(minProgress:Int,progressCounter:Int) {
+class  LouvainInterface(minProgress:Int, progressCounter:Int) {
 
   def run[VD: ClassTag](sc:SparkContext,graph:Graph[VD,Long]) = {
 

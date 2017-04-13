@@ -168,11 +168,11 @@ object LouvainCore {
         if (vdata.community == communityId) k_i_in += communityEdgeWeight
       })
       val M = totalGraphWeight.value
-        val k_i = vdata.nodeWeight + vdata.internalWeight
-        var q = (k_i_in.toDouble / M) - ((sigmaTot * k_i) / math.pow(M, 2))
-        //println(s"vid: $vid community: $community $q = ($k_i_in / $M) -  ( ($sigmaTot * $k_i) / math.pow($M, 2) )")
-        if (q < 0) 0 else q
-      })
+      val k_i = vdata.nodeWeight + vdata.internalWeight
+      var q = (k_i_in.toDouble / M) - ((sigmaTot * k_i) / math.pow(M, 2))
+      //println(s"vid: $vid community: $community $q = ($k_i_in / $M) -  ( ($sigmaTot * $k_i) / math.pow($M, 2) )")
+      if (q < 0) 0 else q
+    })
 
     //println("----------------\n\n\n\n\n" + newVertices.values.collect().foreach(println) + "\n\n\n\n\n\n------------")
 
@@ -316,7 +316,7 @@ object LouvainCore {
 
     var deltaQ = BigDecimal(0.0);
     if (!(isCurrentCommunity && sigma_tot.equals(0.0))) {
-      if (M ==0) deltaQ =0
+      if (M == 0) deltaQ = 0
       else deltaQ = k_i_in - (k_i * sigma_tot / M)
       //println(s" $deltaQ = $k_i_in - ( $k_i * $sigma_tot / $M")
     }
@@ -391,3 +391,4 @@ object LouvainCore {
     edges.unpersist(blocking = false)
     return louvainGraph
   }
+}

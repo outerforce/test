@@ -19,7 +19,7 @@ import java.io._
   * @author Irene
   */
 
-class FastUnfolding(minProgress: Int, progressCounter: Int, outputdir: String) extends LouvainHarness(minProgress: Int, progressCounter: Int) {
+class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: String) extends LouvainInterface(minProgress: Int, progressCounter: Int) {
 
   var qValues = Array[(Int, Double)]()
 

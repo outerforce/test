@@ -22,7 +22,7 @@ class MainConf(args: Seq[String]) extends ScallopConf(args) with Tokenizer {
   verify()
 }
 
-object Main extends Tokenizer {
+object FUMain extends Tokenizer {
   val log = Logger.getLogger(getClass().getName())
 
   def main(argv: Array[String]): Unit = {
@@ -68,8 +68,13 @@ object Main extends Tokenizer {
     // algorithm and save the output.
     // to change the outputs you can extend LouvainRunner.scala
     val out = args.output().toString()
-    println(out)
-    val runner = new FastUnfolding(minProgress, progressCounter, out)
+    //println(out)
+    val t1 = System.nanoTime
+
+    val runner = new LouvainGraphRunner(minProgress, progressCounter, out)
     runner.run(sc, graph)
+
+    val duration = (System.nanoTime - t1) / 1e9d
+    println("\n\n\n\n\n\n----------"+duration+"---------------------------\n\n\n\n\n")
   }
 }
