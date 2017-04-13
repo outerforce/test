@@ -31,6 +31,7 @@ object FUMain{
 
     log.info("Input: " + args.input())
     log.info("Output: " + args.output())
+    log.info("Reducers: " + args.reducers())
 
     val parallelism = args.parallelism()
     val reducers = args.reducers
@@ -44,12 +45,14 @@ object FUMain{
     val deleted = FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
     if (deleted) println("output directory is deleted.")
 
+    //var edgeRDD = GraphLoader.edgeListFile(args.input())
     //val graph: Graph[Int, Int] = GraphLoader.edgeListFile(sc, args.input()).cache()
     val textFile = sc.textFile(args.input())
     val inputHashFunc = (id: String) => id.toLong
 
     var edgeRDD = textFile.map(line => {
-      val tokens = line.split(" ").map(_.trim())
+      val tokens = line.split("\t").map(_.trim())
+      if tokens(0)
       tokens.length match {
         case 2 => {
           new Edge(tokens(0).toLong, tokens(1).toLong, 1L)
@@ -61,14 +64,14 @@ object FUMain{
       }
       //      println(tokens(0),tokens(1))
       //      new Edge(inputHashFunc(tokens(0)), inputHashFunc(tokens(1)), 1L)
-    })
+      })
     // if the parallelism option was set map the input to the correct number of partitions,
     // otherwise parallelism will be based off number of HDFS blocks
-    if (parallelism != -1) edgeRDD = edgeRDD.coalesce(parallelism, shuffle = true)
+    //if (parallelism != -1) edgeRDD = edgeRDD.coalesce(parallelism, shuffle = true)
 
     // create the graph
     val graph = Graph.fromEdges(edgeRDD, None).groupEdges(_ + _)
-    // use a helper class to execute the louvain algorithm and save the output.
+     //use a helper class to execute the louvain algorithm and save the output.
 
     val out = args.output().toString()
     //println(out)
