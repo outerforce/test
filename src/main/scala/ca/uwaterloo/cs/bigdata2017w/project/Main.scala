@@ -51,7 +51,7 @@ object Main extends Tokenizer {
       val tokens = line.split(" ").map(_.trim())
       tokens.length match{
         case 2 => {new Edge(tokens(0).toLong,tokens(1).toLong,1L)}
-        case 3 => {new Edge(tokens(0).toLong,tokens(1).toLong,tokens(2).toLong)}
+        //case 3 => {new Edge(tokens(0).toLong,tokens(1).toLong,tokens(2).toLong)}
         case _ =>{throw new IllegalArgumentException("-------------invalid input line: "+line+"-------------------------")}
       }
 //      println(tokens(0),tokens(1))
