@@ -50,43 +50,43 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
       pairRDD.reduceByKey((x, y) => x.toString() + " " + y.toString()).saveAsTextFile(outputdir + "/level_" + level + "_communitys")
     }
     else {
-      var FormerVerticePath = outputdir + "/level_" + (level - 1) + "_communitys"
-
-      val FormerVInfoRDD = sc.textFile(FormerVerticePath)
-
-      var FormerpairRDD = FormerVInfoRDD.map { line =>
-        var effectline = line.split("\\(")(1)
-
-        var InfoList = effectline.split(",")
-        var Vid = InfoList(0).trim()
-        var communityList = InfoList(1).trim()
-        (Vid, communityList)
-      }
-
-      val valueList = pairRDD.values.collect()
-      var cpair: scala.collection.mutable.Map[String, String] = scala.collection.mutable.Map()
-
-
-      for (pair <- pairRDD.collect()) {
-        if (!cpair.contains(pair._1))
-          if (pair._1 == pair._1)
-            cpair += (pair._1 -> (FormerpairRDD.lookup(pair._2).mkString(" ")))
-          else
-            cpair += (pair._1 -> (FormerpairRDD.lookup(pair._1).mkString(" ") + " " + FormerpairRDD.lookup(pair._2).mkString(" ")))
-
-        else if (pair._1 == pair._1)
-          cpair(pair._1) = cpair(pair._1) + FormerpairRDD.lookup(pair._2).mkString(" ")
-        else
-          cpair(pair._1) = cpair(pair._1) + FormerpairRDD.lookup(pair._1).mkString(" ") + " " + FormerpairRDD.lookup(pair._2).mkString(" ")
-      }
-
-      var pairList = cpair.toArray
-
-      var pairArray = pairList.map(item => item._1 + "," + item._2.split("[^\\d]").mkString(" "))
-
-      var result = sc.parallelize(pairArray)
-
-      result.saveAsTextFile(outputdir + "/level_" + level + "_communitys")
+//      var FormerVerticePath = outputdir + "/level_" + (level - 1) + "_communitys"
+//
+//      val FormerVInfoRDD = sc.textFile(FormerVerticePath)
+//
+//      var FormerpairRDD = FormerVInfoRDD.map { line =>
+//        var effectline = line.split("\\(")(1)
+//
+//        var InfoList = effectline.split(",")
+//        var Vid = InfoList(0).trim()
+//        var communityList = InfoList(1).trim()
+//        (Vid, communityList)
+//      }
+//
+//      val valueList = pairRDD.values.collect()
+//      var cpair: scala.collection.mutable.Map[String, String] = scala.collection.mutable.Map()
+//
+//
+//      for (pair <- pairRDD.collect()) {
+//        if (!cpair.contains(pair._1))
+//          if (pair._1 == pair._1)
+//            cpair += (pair._1 -> (FormerpairRDD.lookup(pair._2).mkString(" ")))
+//          else
+//            cpair += (pair._1 -> (FormerpairRDD.lookup(pair._1).mkString(" ") + " " + FormerpairRDD.lookup(pair._2).mkString(" ")))
+//
+//        else if (pair._1 == pair._1)
+//          cpair(pair._1) = cpair(pair._1) + FormerpairRDD.lookup(pair._2).mkString(" ")
+//        else
+//          cpair(pair._1) = cpair(pair._1) + FormerpairRDD.lookup(pair._1).mkString(" ") + " " + FormerpairRDD.lookup(pair._2).mkString(" ")
+//      }
+//
+//      var pairList = cpair.toArray
+//
+//      var pairArray = pairList.map(item => item._1 + "," + item._2.split("[^\\d]").mkString(" "))
+//
+//      var result = sc.parallelize(pairArray)
+//
+//      result.saveAsTextFile(outputdir + "/level_" + level + "_communitys")
       sc.stop()
     }
 
