@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
   */
 
 class MainConf(args: Seq[String]) extends ScallopConf(args){
-  mainOptions = Seq(input, output)
+  mainOptions = Seq(input, output, parallelism)
   val input = opt[String](descr = "input path", required = true)
   val output = opt[String](descr = "output path", required = true)
   val parallelism = opt[Int](descr = "parallel", required = false, default = Some(-1))

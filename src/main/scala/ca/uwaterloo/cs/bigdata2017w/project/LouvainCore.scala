@@ -77,7 +77,7 @@ object LouvainCore {
     //        Iterator(m1, m2)
     //      }, mergeMsg)
 
-    
+
     // gather community information from each vertex's local neighborhood
     var communityRDD = louvainGraph.aggregateMessages(sendCommunityData, mergeCommunityMessages)
     var activeMessages = communityRDD.count() //materializes the msgRDD and caches it in memory
