@@ -35,8 +35,8 @@ object FUMain{
 
     val parallelism = args.parallelism()
     val reducers = args.reducers
-    var minProgress = 2000
-    var progressCounter = 4
+    var minProgress = 20000
+    var progressCounter = 6
 
     val conf = new SparkConf().setAppName("MainGraph")
     val sc = new SparkContext(conf)
