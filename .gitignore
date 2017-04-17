@@ -7,3 +7,4 @@ data/small.txt
 *.txt
 twitter_small/
 small/
+*.log
