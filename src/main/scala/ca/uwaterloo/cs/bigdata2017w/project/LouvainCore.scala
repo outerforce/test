@@ -121,9 +121,7 @@ object LouvainCore {
 
       val prevG = louvainGraph
       louvainGraph = louvainGraph.outerJoinVertices(updatedVertices)((vid, old, newOpt) => newOpt.getOrElse(old))
-      /*louvainGraph.cache()
-      print("--------------------\n\n\n\n")
-      printlouvain(louvainGraph)*/
+      louvainGraph.cache()
 
       // gather community information from each vertex's local neighborhood
       val oldMsgs = communityRDD
@@ -139,7 +137,7 @@ object LouvainCore {
       //        , mergeMsg).cache()
       //      activeMessages = msgRDD.count()
       // materializes the graph by forcing computation
-      print("\n\n\n\n\n" + activeMessages + "\n\n\n\n\n\n\n\n")
+      //print("\n\n\n\n\n" + activeMessages + "\n\n\n\n\n\n\n\n")
 
       oldMsgs.unpersist(blocking = false)
       updatedVertices.unpersist(blocking = false)
@@ -155,8 +153,6 @@ object LouvainCore {
         if (updated >= updatedLastPhase - minProgress) stop += 1
         updatedLastPhase = updated
       }
-
-
     } while (stop <= progressCounter && (even || (updated > 0 && count < maxIter)))
     println("\n\nCompleted in " + count + " cycles\n\n\n")
 
@@ -171,9 +167,11 @@ object LouvainCore {
         if (vdata.community == communityId) k_i_in += communityEdgeWeight
       })
       val M = totalGraphWeight.value
+
       val k_i = vdata.nodeWeight + vdata.internalWeight
       var q = (k_i_in.toDouble / M) - ((sigmaTot * k_i) / math.pow(M, 2))
       //println(s"vid: $vid community: $community $q = ($k_i_in / $M) -  ( ($sigmaTot * $k_i) / math.pow($M, 2) )")
+      //if (M == 0) {q = 0}
       if (q < 0) 0 else q
     })
 
@@ -370,7 +368,7 @@ object LouvainCore {
       .partitionBy(PartitionStrategy.EdgePartition2D).groupEdges(_ + _)
 
     // calculate the weighted degree of each node
-    val nodeWeightMapFunc = (e: EdgeTriplet[VertexState, Long]) => Iterator((e.srcId, e.attr), (e.dstId, e.attr))
+    //val nodeWeightMapFunc = (e: EdgeTriplet[VertexState, Long]) => Iterator((e.srcId, e.attr), (e.dstId, e.attr))
     val nodeWeightReduceFunc = (e1: Long, e2: Long) => e1 + e2
     val nodeWeights = compressedGraph.aggregateMessages[Long](
       triplet => {

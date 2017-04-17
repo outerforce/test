@@ -4,3 +4,6 @@ target/
 twitter1/
 data/twitter_large/
 data/small.txt
+*.txt
+twitter_small/
+small/
