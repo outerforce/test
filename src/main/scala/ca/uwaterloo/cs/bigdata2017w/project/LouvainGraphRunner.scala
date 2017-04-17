@@ -33,7 +33,7 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
     sc.parallelize(qValues, 1).saveAsTextFile(outputdir + "/level_" + level + "_qvalues")
 
     //------------------ultimate communities+ initial vertex_id-------------------------
-/*
+
     val VInfoRDD = sc.textFile(verticePath)
     //(5,{community:5,communitySigmaTot:6,internalWeight:0,nodeWeight:3})
 
@@ -49,7 +49,7 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
     if (level == 0) {
       pairRDD.reduceByKey((x, y) => x.toString() + " " + y.toString()).saveAsTextFile(outputdir + "/level_" + level + "_communitys")
     }
-    else {*/
+//    else {*/
 //      var FormerVerticePath = outputdir + "/level_" + (level - 1) + "_communitys"
 //
 //      val FormerVInfoRDD = sc.textFile(FormerVerticePath)
@@ -87,7 +87,7 @@ class LouvainGraphRunner(minProgress: Int, progressCounter: Int, outputdir: Stri
 //      var result = sc.parallelize(pairArray)
 //
 //      result.saveAsTextFile(outputdir + "/level_" + level + "_communitys")
-      //sc.stop()
+      sc.stop()
     }
 }
 

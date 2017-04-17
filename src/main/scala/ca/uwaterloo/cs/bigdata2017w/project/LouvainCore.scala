@@ -36,7 +36,8 @@ object LouvainCore {
       state.internalWeight = 0L
       state.nodeWeight = weight
       state
-    }).partitionBy(PartitionStrategy.EdgePartition2D).groupEdges(_ + _)
+    }).partitionBy(PartitionStrategy.EdgePartition2D)
+      //for test .groupEdges(_ + _)
 
     return louvainGraph
   }
