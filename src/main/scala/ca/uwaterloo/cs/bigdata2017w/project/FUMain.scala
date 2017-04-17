@@ -52,7 +52,7 @@ object FUMain{
     //val inputHashFunc = (id: String) => id.toLong
 
     var edgeRDD = textFile.map(line => {
-      val tokens = line.split(" ").map(_.trim())
+      val tokens = line.split("\t").map(_.trim())
       tokens.length match {
         case 2 => {
           new Edge(tokens(0).toLong, tokens(1).toLong, 1L)
