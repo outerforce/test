@@ -46,7 +46,7 @@ class LouvainInterface(minProgress: Int, progressCounter: Int) {
 
       // label each vertex with its best community choice at this level of compression
       val (currentQ, currentGraph, passes) = LouvainCore.louvain(sc, louvainGraph, minProgress, progressCounter)
-      louvainGraph.unpersistVertices(blocking = false) //顶点释放
+      louvainGraph.unpersistVertices(blocking = false) //release the vertex
 
       louvainGraph = currentGraph
 
