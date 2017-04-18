@@ -1,0 +1,15 @@
+dataset             68 byte      			11.3M
+total edge weight   34          			1669594
+circles             4   					12/2 level0/level1
+time                3.89s					313.311s/297.04s
+Qvalue     			(0,0.4134948096885813)  (0,0.5614647570219136)
+
+
+altiscale
+
+dataset             68 byte      			11.3M twitter   		12.6M amazon 			30M youtube         		500M lj
+total edge weight   34          			1669594 				1851744					5975248						69362378
+circles             4   					12/2					24/2					28/2				
+time                3.89s					323.08s					179.597s				11334.885s
+Qvalue     			0.4134948096885813      0.5614647570219136      0.6552802409568756      0.6067892457681281   
+																		

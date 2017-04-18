@@ -2,9 +2,4 @@
 .idea/
 target/
 twitter1/
-data/twitter_large/
-data/small.txt
-lj.txt
-twitter_small/
-small/
-*.log
+data/
